@@ -340,7 +340,7 @@ bot.on('message', message => {
 			}
 		}
 	} else {
-		sendError(message, `Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot`);
+		sendError(message, `Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`);
 	}
 });
 
