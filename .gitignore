@@ -1,0 +1,6 @@
+# Directories
+/node_modules/
+
+# Specific Files
+*.bat
+/Storage/config.json
