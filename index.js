@@ -138,7 +138,7 @@ bot.on('message', message => {
 						//key word
 
 						//youtube search
-						var options = { maxResults: 1, key: config.clefAPIYoutube };
+						var options = { maxResults: 1, key: process.env.clefAPIYoutube };
 						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
 							if (err) return console.log(err);
 							console.log(results[0].link + "\n");
@@ -377,7 +377,7 @@ bot.on('guildMemberAdd', member => {
 });
 
 
-bot.login(config.token); //token du bot
+bot.login(process.env.tokenDiscord); //token du bot
 
 // https://discordapp.com/api/oauth2/authorize?client_id=464148045668417536&permissions=8&scope=bot
 
