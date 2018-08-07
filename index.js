@@ -111,6 +111,8 @@ bot.on('message', message => {
 
 			if (splitMessage.length >= 2) {
 				if (!message.member.voiceChannel) return sendError(message, "Pour jouer de la musique, connectez vous dans un salon vocal");
+
+				var musicList = [];
 				//join voice channel
 				message.member.voiceChannel.join().then(connection => {
 
