@@ -3,4 +3,4 @@
 
 # Specific Files
 *.bat
-/Storage/config.json
+Storage/config.json
