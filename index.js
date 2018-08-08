@@ -19,18 +19,23 @@ function sendError(message, description) {
 
 }
 
-function sendEmbed(message, description, type) {
+function sendEmbed(message, description, type, suppression) {
 	colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
 	var color = colorList[Math.floor(Math.random() * colorList.length)];
 	var embed = new Discord.RichEmbed();
 	embed.setColor(color).setDescription(description);
+
+
 	if (type === 'send') {
-		message.channel.send({ embed: embed }).then(msg => msg.delete(10000));
+		message.channel.send({ embed: embed }).then((msg) => { if (suppression) { msg.delete(10000) } });
 	}
 	if (type === 'reply') {
-		message.reply({ embed: embed }).then(msg => msg.delete(10000));
+		message.reply({ embed: embed }).then(msg => { if (suppression) { msg.delete(10000) } });
 	}
+
 }
+
+
 bot.on('message', message => {
 
 	const splitMessage = message.content.split(' ');
@@ -59,10 +64,10 @@ bot.on('message', message => {
 					config.prefix = newPrefix; //change in memory
 					fs.writeFile("./Storage/config.json", JSON.stringify(config), (err) => console.error); //save file
 					console.log('prefix set to ' + newPrefix);
-					sendEmbed(message, 'Le prefix a été défini sur: ' + newPrefix, 'send')
+					sendEmbed(message, 'Le prefix a été défini sur: ' + newPrefix, 'send', true)
 					//donner le prefix actuel si 0 args
 				} else if (splitMessage.length === 1) {
-					sendEmbed(message, "Le prefix actuel est: \"" + config.prefix + "\"", 'send');
+					sendEmbed(message, "Le prefix actuel est: \"" + config.prefix + "\"", 'send', true);
 				} else {
 					sendError(message, "Erreur sur le nombre de paramètres !");
 				}
@@ -142,7 +147,7 @@ bot.on('message', message => {
 						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
 							if (err) return console.log(err);
 							console.log(results[0].link + "\n");
-							sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send');
+							sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send', false);
 							const stream = youtubeStream(results[0].link, { quality: 'highestaudio', filter: 'audioonly' });
 							const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
@@ -173,7 +178,7 @@ bot.on('message', message => {
 			if (voiceConnection === null) return sendError(message, 'Aucune musique n\'est jouée');
 			const dispatcher = voiceConnection.player.dispatcher;
 			//pause
-			sendEmbed(message, 'Musique mise en pause', 'send');
+			sendEmbed(message, 'Musique mise en pause', 'send', true);
 			if (!dispatcher.paused) dispatcher.pause();
 		}
 
@@ -183,7 +188,7 @@ bot.on('message', message => {
 			if (voiceConnection === null) return sendError(message, 'Aucune musique n\'est jouée');
 			const dispatcher = voiceConnection.player.dispatcher;
 			// Resume
-			sendEmbed(message, 'Reprise de la lecture', 'send')
+			sendEmbed(message, 'Reprise de la lecture', 'send', true)
 			if (dispatcher.paused) dispatcher.resume();
 		}
 
@@ -196,7 +201,7 @@ bot.on('message', message => {
 			if (!(splitMessage.length === 2)) return;
 			if (isNaN(splitMessage[1])) { return sendError(message, "Indiquer le volume souhaité: " + config.prefix + "volume <numéro>") }
 			if ((splitMessage[1] > 100) || (splitMessage[1] < 0)) return sendError(message, 'Volume en dehors des bornes 0..100')
-			sendEmbed(message, 'Volume défini sur: ' + splitMessage[1], 'send')
+			sendEmbed(message, 'Volume défini sur: ' + splitMessage[1], 'send', true)
 			dispatcher.setVolume((splitMessage[1] / 100));
 		}
 
@@ -207,7 +212,7 @@ bot.on('message', message => {
 			const dispatcher = voiceConnection.player.dispatcher;
 			if (voiceConnection.paused) dispatcher.resume();
 			dispatcher.end();
-			sendEmbed(message, `Musique skip par ${message.author}`, 'send')
+			sendEmbed(message, `Musique skip par ${message.author}`, 'send', false)
 		}
 
 		//botActivity
@@ -216,9 +221,9 @@ bot.on('message', message => {
 			//donne l'activite actuel si 0 args
 			if (splitMessage.length === 1) {
 				if (config.typeOfActivity.toLowerCase() === 'streaming') {
-					sendEmbed(message, `L\'activité actuel du bot est: \` ${config.activity} \` en mode \`${config.typeOfActivity}\` sur la chaine: \`${config.StreamURL}\``, 'send');
+					sendEmbed(message, `L\'activité actuel du bot est: \` ${config.activity} \` en mode \`${config.typeOfActivity}\` sur la chaine: \`${config.StreamURL}\``, 'send', true);
 				} else
-					sendEmbed(message, `L\'activité actuel du bot est: \` ${config.activity} \` en mode \`${config.typeOfActivity}\``, 'send');
+					sendEmbed(message, `L\'activité actuel du bot est: \` ${config.activity} \` en mode \`${config.typeOfActivity}\``, 'send', true);
 			} else {
 
 				let newActivity = "";
@@ -237,7 +242,7 @@ bot.on('message', message => {
 				config.typeOfActivity = newTypeOfActivity;
 				fs.writeFile("./Storage/config.json", JSON.stringify(config), (err) => console.error); //save file
 				console.log('Activity update: ' + newActivity + " ; " + newTypeOfActivity);
-				sendEmbed(message, 'L\'activité du bot a été changée sur: ' + newActivity + 'en mode ' + newTypeOfActivity, 'send');
+				sendEmbed(message, 'L\'activité du bot a été changée sur: ' + newActivity + 'en mode ' + newTypeOfActivity, 'send', true);
 				bot.user.setActivity(config.activity + " | " + config.prefix + "help", { type: config.typeOfActivity, url: config.StreamURL }); //PLAYING,STREAMING,LISTENING,WATCHING
 			}
 		}
@@ -248,7 +253,7 @@ bot.on('message', message => {
 			const randomUser = memberList.random(1);
 			const randomUserName = randomUser[0].user.username;
 			console.dir(randomUserName);
-			sendEmbed(message, `\`${randomUserName}\` est l'élu`, "send");
+			sendEmbed(message, `\`${randomUserName}\` est l'élu`, "send", false);
 		}
 
 		if (isCommand('pfc')) {
@@ -262,15 +267,15 @@ bot.on('message', message => {
 			var player2 = message.mentions.users.first();
 			var random2 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
 
-			sendEmbed(message, `**Joueur 1: ${player1} : ${random1} \n Joueur 2: ${player2} : ${random2} **`, 'send')
+			sendEmbed(message, `**Joueur 1: ${player1} : ${random1} \n Joueur 2: ${player2} : ${random2} **`, 'send', false)
 
 			if (random1 === random2) {
-				sendEmbed(message, 'Partie nulle', 'send')
+				sendEmbed(message, 'Partie nulle', 'send', false)
 			} else if ((random1 === '👊' && random2 === '✌️') || (random1 === '✋' && random2 === '👊') || (random1 === '✌️' && random2 === '✋')) {
-				sendEmbed(message, `${player1} à gagné`, 'send');
+				sendEmbed(message, `${player1} à gagné`, 'send', false);
 			} else
 
-				sendEmbed(message, `${player2} à gagné`, 'send');
+				sendEmbed(message, `${player2} à gagné`, 'send', false);
 		}
 
 		//command outside botChannel
@@ -279,7 +284,7 @@ bot.on('message', message => {
 			message.delete()
 			if (isNaN(splitMessage[1])) { return sendError(message, "Indiquer le nombre de messages à supprimés: " + config.prefix + "clear <numéro>") }
 			// delete messages
-			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send"));
+			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true));
 		}
 
 		//botChannel
@@ -287,7 +292,7 @@ bot.on('message', message => {
 			if (isCommand('botChannel')) {
 				message.delete()
 				if (splitMessage.length === 1) { // 0 parametre
-					sendEmbed(message, `Le channel bot actuel est: \`${config.salonBot} \``, 'send');
+					sendEmbed(message, `Le channel bot actuel est: \`${config.salonBot} \``, 'send', true);
 				} else {
 					let newChannel = message.mentions.channels.first().name;
 					let newChannelId = message.mentions.channels.first().id;
@@ -305,7 +310,7 @@ bot.on('message', message => {
 
 		if (isCommand('ping')) {
 			message.delete();
-			sendEmbed(message, `** :ping_pong: Ping : \`${bot.ping} ms\`**`, 'send', null);
+			sendEmbed(message, `** :ping_pong: Ping : \`${bot.ping} ms\`**`, 'send', true);
 		}
 
 	} else if (isCommand('clear') || isCommand('botChannel')) {
@@ -316,7 +321,7 @@ bot.on('message', message => {
 			message.delete()
 			if (isNaN(splitMessage[1])) { return sendError(message, "Indiquer le nombre de messages à supprimés: " + config.prefix + "clear <numéro>") }
 			// delete messages
-			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send"));
+			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true));
 		}
 
 		//botChannel
@@ -324,7 +329,7 @@ bot.on('message', message => {
 			if (isCommand('botChannel')) {
 				message.delete()
 				if (splitMessage.length === 1) { // 0 parametre
-					sendEmbed(message, `Le channel bot actuel est: \`${config.salonBot} \``, 'send');
+					sendEmbed(message, `Le channel bot actuel est: \`${config.salonBot} \``, 'send', true);
 				} else {
 					let newChannel = message.mentions.channels.first().name;
 					let newChannelId = message.mentions.channels.first().id;
@@ -334,13 +339,13 @@ bot.on('message', message => {
 
 					fs.writeFile("./Storage/config.json", JSON.stringify(config), (err) => console.error); //save file
 					console.log('channel bot set to ' + newChannel);
-					sendEmbed(message, `Le channel bot a été défini sur: \`${newChannel}\``, 'send');
+					sendEmbed(message, `Le channel bot a été défini sur: \`${newChannel}\``, 'send', true);
 
 				}
 			}
 		}
 	} else {
-		sendError(message, `Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`);
+		sendError(message, `Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
 	}
 });
 
@@ -382,6 +387,10 @@ bot.login(process.env.tokenDiscord); //token du bot
 // https://discordapp.com/api/oauth2/authorize?client_id=464148045668417536&permissions=8&scope=bot
 
 /*
+
+parametre pour la suppressin des embed
+
+
 autoriser les messages en DM au bot
 
 music   fille d'attente pour le .play
