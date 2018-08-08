@@ -41,7 +41,7 @@ bot.on('message', message => {
 	const splitMessage = message.content.split(' ');
 
 	function isBotChannel() {
-		return message.channel.id === config.salonBotId;
+		return ((message.channel.id === config.salonBotId) || (message.channel.id === 464907538798739457));
 	}
 
 	function isCommand(command) {
@@ -77,7 +77,7 @@ bot.on('message', message => {
 		//help
 		if (isCommand('help')) {
 			message.delete();
-			sendEmbed(message, "l'aide à été envoyé en DM.", 'reply');
+			sendEmbed(message, "l'aide à été envoyé en DM.", 'reply', true);
 			var embedHelp = new Discord.RichEmbed();
 			//create the embed
 			embedHelp.setAuthor('Le BroBot', 'https://puu.sh/AQXzs/8b78380f55.png')
@@ -302,7 +302,7 @@ bot.on('message', message => {
 
 					fs.writeFile("./Storage/config.json", JSON.stringify(config), (err) => console.error); //save file
 					console.log('channel bot set to ' + newChannel);
-					sendEmbed(message, `Le channel bot a été défini sur: \`${newChannel}\``, 'send');
+					sendEmbed(message, `Le channel bot a été défini sur: \`${newChannel}\``, 'send', true);
 
 				}
 			}
@@ -387,8 +387,6 @@ bot.login(process.env.tokenDiscord); //token du bot
 // https://discordapp.com/api/oauth2/authorize?client_id=464148045668417536&permissions=8&scope=bot
 
 /*
-
-parametre pour la suppressin des embed
 
 
 autoriser les messages en DM au bot
