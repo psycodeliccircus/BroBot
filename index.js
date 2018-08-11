@@ -127,11 +127,14 @@ bot.on('message', message => {
 					if (splitMessage[1].match(/https:\/\/www\.youtu.*/)) {
 						if (splitMessage[1].match(/.*list.*/)) {
 							//error if the link is a playlist
-							sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIT PAS CHIER)')
-							return;
+							sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIT PAS CHIER)');
+							connection.disconnect();
 						}
 						console.log("\n" + splitMessage.join(' ').substring(config.prefix.length + commandLenght));
 						console.log(splitMessage[1]);
+						videoInformation = youtubeStream.getInfo(splitMessage[1]);
+						title = videoInformation[0].title;
+						sendEmbed(message, `Lecture de ${title} en cours ...`, 'send', false);
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
@@ -352,7 +355,7 @@ bot.on('message', message => {
 			}
 		}
 	} else {
-		sendError(message, `Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
+		sendError(message, `${message.author}Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
 	}
 });
 
@@ -404,5 +407,4 @@ music   fille d'attente pour le .play
 				seek
 
 pierre feuille ciceau --> crée un DM pour demander le choix aux personne mentionnée
-.help bug
 */
