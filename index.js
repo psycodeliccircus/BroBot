@@ -132,9 +132,12 @@ bot.on('message', message => {
 						}
 						console.log("\n" + splitMessage.join(' ').substring(config.prefix.length + commandLenght));
 						console.log(splitMessage[1]);
-						videoInformation = youtubeStream.getInfo(splitMessage[1]);
-						console.log(videoInformation);
-						sendEmbed(message, `Lecture de ${title} en cours ...`, 'send', false);
+
+						var rawData = youtubeStream.getInfo(splitMessage[1]);
+						var parsed = JSON.parse(rawData);
+						console.log(parsed[0].title);
+
+						sendEmbed(message, `Lecture de ${parsed[0].title} en cours ...`, 'send', false);
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
