@@ -127,17 +127,18 @@ bot.on('message', message => {
 					if (splitMessage[1].match(/https:\/\/www\.youtu.*/)) {
 						if (splitMessage[1].match(/.*list.*/)) {
 							//error if the link is a playlist
-							sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIT PAS CHIER)');
+							sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIS PAS CHIER)');
 							connection.disconnect();
 						}
 						console.log("\n" + splitMessage.join(' ').substring(config.prefix.length + commandLenght));
 						console.log(splitMessage[1]);
 
-						var rawData = youtubeStream.getInfo(splitMessage[1]);
-						var parsed = JSON.parse(rawData);
-						console.log(parsed[0].title);
-
-						sendEmbed(message, `Lecture de ${parsed[0].title} en cours ...`, 'send', false);
+						var rawData = youtubeStream.getInfo(splitMessage[1], function (err, info) {
+							if (err) return console.log(err);
+							console.log(info.link);
+							console.log(info.title);
+							sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false);
+						});
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
