@@ -133,7 +133,7 @@ bot.on('message', message => {
 						console.log("\n" + splitMessage.join(' ').substring(config.prefix.length + commandLenght));
 						console.log(splitMessage[1]);
 						videoInformation = youtubeStream.getInfo(splitMessage[1]);
-						title = videoInformation[0].title;
+						console.log(videoInformation);
 						sendEmbed(message, `Lecture de ${title} en cours ...`, 'send', false);
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
