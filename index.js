@@ -137,7 +137,21 @@ bot.on('message', message => {
 							if (err) return console.log(err);
 							console.log(info.video_url);
 							console.log(info.title);
-							sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false).addField("testtitre", "testdeccription");
+
+							//embed for the video that is playing
+							colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
+							var color = colorList[Math.floor(Math.random() * colorList.length)];
+							message.send("Ajoutée à la file: ");
+							var embedVideo = new Discord.RichEmbed()
+								.setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
+								.setThumbnail(`${info.thumbnail_url}`)
+								.setTitle(`[[Lien]](\`${video_url}\`)`)
+								.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
+								.addField("Position dans la file: ", `\# 1`, true)
+								.setFooter(`Musique ajoutée par ${message.author}`, `${message.author.avatarURL}`)
+								.setColor(color);
+							message.channel.send({ embed });
+							//sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false);
 						});
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
@@ -161,7 +175,7 @@ bot.on('message', message => {
 						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
 							if (err) return console.log(err);
 							console.log(results[0].link + "\n");
-							sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send', false).addField("testtitre", "testdeccription");
+							sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send', false);
 							const stream = youtubeStream(results[0].link, { quality: 'highestaudio', filter: 'audioonly' });
 							const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
