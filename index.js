@@ -135,9 +135,9 @@ bot.on('message', message => {
 
 						var rawData = youtubeStream.getInfo(splitMessage[1], function (err, info) {
 							if (err) return console.log(err);
-							console.log(info.link);
+							console.log(info.video_url);
 							console.log(info.title);
-							sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false);
+							sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false).addField("testtitre", "testdeccription");
 						});
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
@@ -161,7 +161,7 @@ bot.on('message', message => {
 						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
 							if (err) return console.log(err);
 							console.log(results[0].link + "\n");
-							sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send', false);
+							sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send', false).addField("testtitre", "testdeccription");
 							const stream = youtubeStream(results[0].link, { quality: 'highestaudio', filter: 'audioonly' });
 							const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
