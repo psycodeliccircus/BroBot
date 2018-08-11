@@ -150,7 +150,7 @@ bot.on('message', message => {
 								.addField("Position dans la file: ", `\# 1`, true)
 								.setFooter(`Musique ajoutée par ${message.author}`, `${message.author.avatarURL}`)
 								.setColor(color);
-							message.channel.send({ embedVideo });
+							message.channel.send({ embed: embedVideo });
 							//sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false);
 						});
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
