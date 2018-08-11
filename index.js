@@ -118,12 +118,18 @@ bot.on('message', message => {
 				if (!message.member.voiceChannel) return sendError(message, "Pour jouer de la musique, connectez vous dans un salon vocal");
 
 				var musicList = [];
+
 				//join voice channel
 				message.member.voiceChannel.join().then(connection => {
 
 					//test the args ( link or key word)
 					//link
-					if (splitMessage[1].match(/https:.*/)) {
+					if (splitMessage[1].match(/https:\/\/www\.youtu.*/)) {
+						if (splitMessage[1].match(/.*list.*/)) {
+							//error if the link is a playlist
+							sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIT PAS CHIER)')
+							return;
+						}
 						console.log("\n" + splitMessage.join(' ').substring(config.prefix.length + commandLenght));
 						console.log(splitMessage[1]);
 						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
@@ -139,6 +145,7 @@ bot.on('message', message => {
 							console.log(err);
 							connection.disconnect();
 						});
+
 					} else {
 						//key word
 
