@@ -141,14 +141,14 @@ bot.on('message', message => {
 							//embed for the video that is playing
 							colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
 							var color = colorList[Math.floor(Math.random() * colorList.length)];
-							message.channel.send("Ajoutée à la file: ");
 							var embedVideo = new Discord.RichEmbed()
 								.setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
 								.setThumbnail(`${info.thumbnail_url}`)
-								.setTitle(`[[Lien]](\`${info.video_url}\`)`)
+								.setTitle('[[Lien]](`${info.video_url}`)')
 								.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
 								.addField("Position dans la file: ", `\# 1`, true)
-								.setFooter(`Musique ajoutée par ${message.author}`, `${message.author.avatarURL}`)
+								.setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
+								.setImage(`${info.video_url}`)
 								.setColor(color);
 							message.channel.send({ embed: embedVideo });
 							//sendEmbed(message, `Lecture de ${info.title} en cours ...`, 'send', false);
@@ -373,7 +373,7 @@ bot.on('message', message => {
 			}
 		}
 	} else {
-		sendError(message, `${message.author}Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
+		sendError(message, `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
 	}
 });
 
