@@ -141,11 +141,11 @@ bot.on('message', message => {
 							//embed for the video that is playing
 							colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
 							var color = colorList[Math.floor(Math.random() * colorList.length)];
-							message.send("Ajoutée à la file: ");
+							channel.send("Ajoutée à la file: ");
 							var embedVideo = new Discord.RichEmbed()
 								.setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
 								.setThumbnail(`${info.thumbnail_url}`)
-								.setTitle(`[[Lien]](\`${video_url}\`)`)
+								.setTitle(`[[Lien]](\`${info.video_url}\`)`)
 								.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
 								.addField("Position dans la file: ", `\# 1`, true)
 								.setFooter(`Musique ajoutée par ${message.author}`, `${message.author.avatarURL}`)
