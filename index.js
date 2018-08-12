@@ -148,7 +148,6 @@ bot.on('message', message => {
 								.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
 								.addField("Position dans la file: ", `\# 1`, true)
 								.setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
-								.setImage(`${info.video_url}`)
 								.setColor(color);
 							message.channel.send({ embed: embedVideo });
 						});
@@ -173,9 +172,6 @@ bot.on('message', message => {
 						var options = { maxResults: 1, key: process.env.clefAPIYoutube };
 						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
 							if (err) return console.log(err);
-							console.log(results[0].link + "\n");
-							console.log(results[0] + "\n");
-							console.log(results);
 
 
 							var rawData = youtubeStream.getInfo(results[0].link, function (err, info) {
@@ -193,28 +189,10 @@ bot.on('message', message => {
 									.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
 									.addField("Position dans la file: ", `\# 1`, true)
 									.setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
-									.setImage(`${info.video_url}`)
 									.setColor(color);
 								message.channel.send({ embed: embedVideo });
 							});
 
-
-							//
-							// //embed for the video that is playing
-							// colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
-							// var color = colorList[Math.floor(Math.random() * colorList.length)];
-							// var embedVideo = new Discord.RichEmbed()
-							// 	.setAuthor(`${results[0].title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
-							// 	.setThumbnail(`${results[0].thumbnails}`)
-							// 	.setTitle(`${results[0].link}`)
-							// 	.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
-							// 	.addField("Position dans la file: ", `\# 1`, true)
-							// 	.setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
-							// 	.setImage(`${info.video_url}`)
-							// 	.setColor(color);
-							// message.channel.send({ embed: embedVideo });
-
-							//sendEmbed(message, `Lecture de ${results[0].title} en cours ...`, 'send', false);
 							const stream = youtubeStream(results[0].link, { quality: 'highestaudio', filter: 'audioonly' });
 							const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
