@@ -15,7 +15,7 @@ bot.on('ready', function () {
 //Embed for error
 function sendError(message, description) {
 	embed.setColor("0xCC0000").setDescription(':x: ' + description);
-	message.channel.send({ embed: embed }).then(msg => msg.delete(10000));
+	message.channel.send({ embed: embed }).then(msg => msg.delete(10000)).catch(console.error);
 
 }
 
@@ -28,10 +28,10 @@ function sendEmbed(message, description, type, suppression) {
 
 
 	if (type === 'send') {
-		message.channel.send({ embed: embed }).then((msg) => { if (suppression) { msg.delete(10000) } });
+		message.channel.send({ embed: embed }).then((msg) => { if (suppression) { msg.delete(10000) } }).catch(console.error);
 	}
 	if (type === 'reply') {
-		message.reply({ embed: embed }).then(msg => { if (suppression) { msg.delete(10000) } });
+		message.reply({ embed: embed }).then(msg => { if (suppression) { msg.delete(10000) } }).catch(console.error);
 	}
 
 }
@@ -335,6 +335,13 @@ bot.on('message', message => {
 
 		if (isCommand('test')) {
 
+			sendEmbed(message, 'test', 'send', false).then(msg => {
+				msg.react("◀")
+				msg.react("▶")
+				msg.react("❌")
+			});
+
+
 			const collector = message.createReactionCollector((reaction, user) =>
 				user.id === message.author.id &&
 				reaction.emoji.name === "◀" ||
@@ -360,7 +367,7 @@ bot.on('message', message => {
 			//check if the arg is a number
 			if (isNaN(splitMessage[1])) { return sendError(message, "Indiquer le nombre de messages à supprimés: " + config.prefix + "clear <numéro>") }
 			// delete messages
-			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true));
+			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true)).catch(console.error);
 		}
 
 		//botChannel
@@ -397,7 +404,7 @@ bot.on('message', message => {
 			message.delete()
 			if (isNaN(splitMessage[1])) { return sendError(message, "Indiquer le nombre de messages à supprimés: " + config.prefix + "clear <numéro>") }
 			// delete messages
-			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true));
+			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true)).catch(console.error);
 		}
 
 		//botChannel
