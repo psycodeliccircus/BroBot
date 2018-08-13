@@ -55,8 +55,8 @@ bot.on('message', message => {
 	//ignore bot messages
 	if (message.author.bot) return;
 
-	//ignore all message like ...
-	if (splitMessage[0].match(/\.*/)) return;
+	// //ignore all message like ...
+	// if (splitMessage[0].match(/\.*/)) return;
 
 	//prefix check
 	if (!splitMessage[0].startsWith(config.prefix)) return;
