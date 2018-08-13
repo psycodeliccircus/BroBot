@@ -336,6 +336,7 @@ bot.on('message', message => {
 		//clear
 		if (isCommand('clear')) {
 			message.delete()
+			//check if the arg is a number
 			if (isNaN(splitMessage[1])) { return sendError(message, "Indiquer le nombre de messages à supprimés: " + config.prefix + "clear <numéro>") }
 			// delete messages
 			message.channel.bulkDelete(splitMessage[1]).then(messages => sendEmbed(message, `**suppressions de \`${messages.size}/${splitMessage[1]}\` messages effectuée**`, "send", true));
