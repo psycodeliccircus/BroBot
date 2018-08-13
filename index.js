@@ -335,11 +335,11 @@ bot.on('message', message => {
 
 		if (isCommand('test')) {
 
-			sendEmbed(message, 'test', 'send', false).then(msg => {
+			message.channel.send('test').then(msg => {
 				msg.react("◀")
 				msg.react("▶")
 				msg.react("❌")
-			});
+			}).catch(console.log);
 
 
 			// const collector = message.createReactionCollector((reaction, user) =>
