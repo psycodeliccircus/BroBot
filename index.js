@@ -332,6 +332,27 @@ bot.on('message', message => {
 				sendEmbed(message, `${player2} à gagné`, 'send', false);
 		}
 
+
+		if (isCommand('test')) {
+
+			const collector = message.createReactionCollector((reaction, user) =>
+				user.id === message.author.id &&
+				reaction.emoji.name === "◀" ||
+				reaction.emoji.name === "▶" ||
+				reaction.emoji.name === "❌"
+			).once("collect", reaction => {
+				const chosen = reaction.emoji.name;
+				if (chosen === "◀") {
+					sendEmbed(message, '◀', 'reply', true);
+				} else if (chosen === "▶") {
+					sendEmbed(message, '▶', 'reply', true);
+				} else {
+					sendEmbed(message, '❌', 'reply', true);
+				}
+				collector.stop();
+			});
+		}
+
 		//command outside botChannel
 		//clear
 		if (isCommand('clear')) {
