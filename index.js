@@ -12,13 +12,14 @@ bot.on('ready', function () {
 	bot.user.setStatus('online');
 });
 
-//fonction pour erreur
+//Embed for error
 function sendError(message, description) {
 	embed.setColor("0xCC0000").setDescription(':x: ' + description);
 	message.channel.send({ embed: embed }).then(msg => msg.delete(10000));
 
 }
 
+//embed for short text
 function sendEmbed(message, description, type, suppression) {
 	colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
 	var color = colorList[Math.floor(Math.random() * colorList.length)];
@@ -38,26 +39,35 @@ function sendEmbed(message, description, type, suppression) {
 
 bot.on('message', message => {
 
+	//Variable to reach simply the message
 	const splitMessage = message.content.split(' ');
 
+	//function used to determine if the message channel is the botChannel defined on the config file
 	function isBotChannel() {
 		return ((message.channel.id === config.salonBotId) || (message.channel.id === 464907538798739457));
 	}
 
+	//function used to simplify command creation
 	function isCommand(command) {
 		return splitMessage[0] === config.prefix + command;
 	}
 
-	//ignore les messages des bots
+	//ignore bot messages
 	if (message.author.bot) return;
+
+	//ignore all message like ...
+	if (splitMessage[0].match(/\.*/)) return;
+
 	//prefix check
 	if (!splitMessage[0].startsWith(config.prefix)) return;
+
 	//BotChannel check
 	if (isBotChannel()) {
 		//prefix
-		if (message.author.id === config.ownerID) {
-			if (isCommand('prefix')) {
-				message.delete();
+		if (isCommand('prefix')) {
+			message.delete();
+			//check if the message's author is the owner
+			if (message.author.id === config.ownerID) {
 				if (splitMessage.length === 2) { // 1 parametre
 					//exemple "PREFIX+prefix +" --> PREFIX = "+"
 					let newPrefix = splitMessage[1];
@@ -155,7 +165,7 @@ bot.on('message', message => {
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
 						bot.on('error', err => {
-							sendError(message, 'Impossible de lire le fichier donné');
+							sendError(message, 'Erreur: Impossible de lire le fichier donné');
 							connection.disconnect();
 							console.log(err);
 						});
@@ -167,7 +177,6 @@ bot.on('message', message => {
 
 					} else {
 						//key word
-
 						//youtube search
 						var options = { maxResults: 1, key: process.env.clefAPIYoutube };
 						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
@@ -197,7 +206,7 @@ bot.on('message', message => {
 							const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
 							bot.on('error', err => {
-								sendError(message, 'Impossible de lire le fichier donné')
+								sendError(message, 'Erreur: Impossible de lire le fichier donné')
 								connection.disconnect();
 								console.log(err);
 							});
