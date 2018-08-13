@@ -342,22 +342,22 @@ bot.on('message', message => {
 			}).catch(console.log);
 
 
-			// const collector = message.createReactionCollector((reaction, user) =>
-			// 	user.id === message.author.id &&
-			// 	reaction.emoji.name === "◀" ||
-			// 	reaction.emoji.name === "▶" ||
-			// 	reaction.emoji.name === "❌"
-			// ).once("collect", reaction => {
-			// 	const chosen = reaction.emoji.name;
-			// 	if (chosen === "◀") {
-			// 		sendEmbed(message, '◀', 'reply', true);
-			// 	} else if (chosen === "▶") {
-			// 		sendEmbed(message, '▶', 'reply', true);
-			// 	} else {
-			// 		sendEmbed(message, '❌', 'reply', true);
-			// 	}
-			// 	collector.stop();
-			// });
+			const collector = message.createReactionCollector((reaction, user) =>
+				user.id === message.author.id &&
+				reaction.emoji.name === "◀" ||
+				reaction.emoji.name === "▶" ||
+				reaction.emoji.name === "❌"
+			).once("collect", reaction => {
+				const chosen = reaction.emoji.name;
+				if (chosen === "◀") {
+					sendEmbed(message, '◀', 'reply', true);
+				} else if (chosen === "▶") {
+					sendEmbed(message, '▶', 'reply', true);
+				} else {
+					sendEmbed(message, '❌', 'reply', true);
+				}
+				collector.stop();
+			});
 		}
 
 		//command outside botChannel
