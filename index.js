@@ -15,7 +15,7 @@ bot.on('ready', function () {
 //Embed for error
 function sendError(message, description) {
 	embed.setColor("0xCC0000").setDescription(':x: ' + description);
-	message.channel.send({ embed: embed }).then(msg => msg.delete(10000)).catch(console.error);
+	return message.channel.send({ embed: embed }).then(msg => msg.delete(10000)).catch(console.error);
 
 }
 
@@ -28,10 +28,10 @@ function sendEmbed(message, description, type, suppression) {
 
 
 	if (type === 'send') {
-		message.channel.send({ embed: embed }).then((msg) => { if (suppression) { msg.delete(10000) } }).catch(console.error);
+		return message.channel.send({ embed: embed }).then((msg) => { if (suppression) { msg.delete(10000) } }).catch(console.error);
 	}
 	if (type === 'reply') {
-		message.reply({ embed: embed }).then(msg => { if (suppression) { msg.delete(10000) } }).catch(console.error);
+		return message.reply({ embed: embed }).then(msg => { if (suppression) { msg.delete(10000) } }).catch(console.error);
 	}
 
 }
@@ -118,39 +118,121 @@ bot.on('message', message => {
 		//play
 		if (isCommand('play') || isCommand('pl')) {
 			message.delete()
-			if (isCommand('pl')) {
-				commandLenght = 3
-			} else {
-				commandLenght = 5
-			}
 
-			if (splitMessage.length >= 2) {
-				if (!message.member.voiceChannel) return sendError(message, "Pour jouer de la musique, connectez vous dans un salon vocal");
+			//error on the number of parameter
+			if (splitMessage.length === 1) { sendError(message, "Veuillez spécifier un élément à joué"); }
+			if (!message.member.voiceChannel) { return sendError(message, "Pour jouer de la musique, connectez vous dans un salon vocal"); }
 
-				var musicList = [];
+			//random color for the embed
+			let colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
+			let color = colorList[Math.floor(Math.random() * colorList.length)];
 
-				//join voice channel
-				message.member.voiceChannel.join().then(connection => {
+			//join voice channel
+			message.member.voiceChannel.join().then(connection => {
 
-					//test the args ( link or key word)
-					//link
-					if (splitMessage[1].match(/https:\/\/www\.youtu.*/)) {
-						if (splitMessage[1].match(/.*list.*/)) {
-							//error if the link is a playlist
-							sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIS PAS CHIER)');
-							connection.disconnect();
-						}
-						console.log("\n" + splitMessage.join(' ').substring(config.prefix.length + commandLenght));
-						console.log(splitMessage[1]);
+				//test the args ( link or key word)
+				//link
+				if (splitMessage[1].match(/https:\/\/www\.youtu.*/)) {
+					//get out playlist
+					if (splitMessage[1].match(/.*list.*/)) {
+						//error if the link is a playlist
+						sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIS PAS CHIER)');
+						connection.disconnect();
+					}
 
-						var rawData = youtubeStream.getInfo(splitMessage[1], function (err, info) {
+					//get the info of the video
+					youtubeStream.getInfo(splitMessage[1], (err, info) => {
+						if (err) return console.log(err);
+						console.log("\n" + info.video_url);
+						console.log(info.title);
+
+						//embed for the video that is playing
+						let embedVideo = new Discord.RichEmbed()
+							.setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
+							.setThumbnail(`${info.thumbnail_url}`)
+							.setTitle(`${info.video_url}`)
+							.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
+							.addField("Position dans la file: ", `\# 1`, true)
+							.setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
+							.setColor(color);
+						//message.channel.send({ embed: embedVideo });
+						message.channel.send({ embed: embedVideo }).then(embedMessage => {
+							embedMessage.react("➡");
+							embedMessage.react("⏯");
+							embedMessage.react("❌");
+							embedMessage.react('1️⃣');
+
+							// Create a reaction collector
+							const filter = (reaction, user) => (reaction.emoji.name === "➡" || reaction.emoji.name === "⏯" || reaction.emoji.name === "❌") && user.id === message.author.id
+							const collector = embedMessage.createReactionCollector(filter, { time: 15000 }).once("collect", MessageReaction => {
+								//action of one reaction
+								const chosen = MessageReaction.emoji.name;
+
+								switch (chosen) {
+									case "➡":
+										//skip
+										const voiceConnection = bot.voiceConnections.find(val => val.channel.guild.id == message.guild.id);
+										const dispatcher = voiceConnection.player.dispatcher;
+										if (voiceConnection === null) return sendError(message, 'Aucune musique n\'est jouée');
+										if (voiceConnection.paused) dispatcher.resume();
+										dispatcher.end();
+										sendEmbed(message, `Musique skip par ${message.author}`, 'send', false)
+										break;
+									case "⏯":
+										//pause
+										if (voiceConnection === null) return sendError(message, 'Aucune musique n\'est jouée');
+										sendEmbed(message, 'Musique mise en pause', 'send', true);
+										if (!dispatcher.paused) dispatcher.pause();
+										break;
+									case "❌":
+										//
+										if (voiceConnection === null) return sendError(message, 'Aucune musique n\'est jouée');
+										if (voiceConnection.paused) dispatcher.resume();
+										dispatcher.end();
+										break;
+								}
+								collector.stop();
+							});
+						}).catch(console.log);
+					});
+
+
+
+					const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
+					const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
+
+					bot.on('error', err => {
+						sendError(message, 'Erreur: Impossible de lire le fichier donné');
+						connection.disconnect();
+						console.log(err);
+					});
+
+					dispatcher.on('end', err => {
+						console.log(err);
+						connection.disconnect();
+					});
+
+				} else {
+					//key word
+					//get the command length
+					if (isCommand('pl')) {
+						commandLenght = 3
+					} else {
+						commandLenght = 5
+					}
+
+					//youtube search
+					var options = { maxResults: 1, key: process.env.clefAPIYoutube };
+					search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, (err, results) => {
+						if (err) return console.log(err);
+
+						//get the info of the video
+						youtubeStream.getInfo(results[0].link, (err, info) => {
 							if (err) return console.log(err);
-							console.log(info.video_url);
+							console.log("\n" + info.video_url);
 							console.log(info.title);
 
 							//embed for the video that is playing
-							colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
-							var color = colorList[Math.floor(Math.random() * colorList.length)];
 							var embedVideo = new Discord.RichEmbed()
 								.setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
 								.setThumbnail(`${info.thumbnail_url}`)
@@ -161,11 +243,12 @@ bot.on('message', message => {
 								.setColor(color);
 							message.channel.send({ embed: embedVideo });
 						});
-						const stream = youtubeStream(splitMessage[1], { quality: 'lowest', filter: 'audioonly' });
+
+						const stream = youtubeStream(results[0].link, { quality: 'highestaudio', filter: 'audioonly' });
 						const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
 
 						bot.on('error', err => {
-							sendError(message, 'Erreur: Impossible de lire le fichier donné');
+							sendError(message, 'Erreur: Impossible de lire le fichier donné')
 							connection.disconnect();
 							console.log(err);
 						});
@@ -174,54 +257,10 @@ bot.on('message', message => {
 							console.log(err);
 							connection.disconnect();
 						});
+					});
+				}
 
-					} else {
-						//key word
-						//youtube search
-						var options = { maxResults: 1, key: process.env.clefAPIYoutube };
-						search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, function (err, results) {
-							if (err) return console.log(err);
-
-
-							var rawData = youtubeStream.getInfo(results[0].link, function (err, info) {
-								if (err) return console.log(err);
-								console.log(info.video_url);
-								console.log(info.title);
-
-								//embed for the video that is playing
-								colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE", "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"];
-								var color = colorList[Math.floor(Math.random() * colorList.length)];
-								var embedVideo = new Discord.RichEmbed()
-									.setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
-									.setThumbnail(`${info.thumbnail_url}`)
-									.setTitle(`${info.video_url}`)
-									.addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
-									.addField("Position dans la file: ", `\# 1`, true)
-									.setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
-									.setColor(color);
-								message.channel.send({ embed: embedVideo });
-							});
-
-							const stream = youtubeStream(results[0].link, { quality: 'highestaudio', filter: 'audioonly' });
-							const dispatcher = connection.playStream(stream, { seek: 0, volume: config.defaultvolume });
-
-							bot.on('error', err => {
-								sendError(message, 'Erreur: Impossible de lire le fichier donné')
-								connection.disconnect();
-								console.log(err);
-							});
-
-							dispatcher.on('end', err => {
-								console.log(err);
-								connection.disconnect();
-							});
-						});
-					}
-
-				}).catch(console.log);
-
-			} else
-				sendError(message, "Erreur sur le nombre de paramètres");
+			}).catch(console.log);
 		}
 
 
@@ -267,6 +306,7 @@ bot.on('message', message => {
 			if (voiceConnection.paused) dispatcher.resume();
 			dispatcher.end();
 			sendEmbed(message, `Musique skip par ${message.author}`, 'send', false)
+
 		}
 
 		//botActivity
@@ -335,29 +375,37 @@ bot.on('message', message => {
 
 		if (isCommand('test')) {
 
-			message.channel.send('test').then(msg => {
-				msg.react("◀")
-				msg.react("▶")
-				msg.react("❌")
+			let reply = "";
+			//embed of the video
+			let suggestembed = new Discord.RichEmbed()
+				.setDescription(" ")
+				.setColor("#00FFFF")
+				.addField("test", `test`);
+			message.channel.send({ embed: suggestembed }).then(embedMessage => {
+				embedMessage.react("▶");
+				embedMessage.react("◀");
+				embedMessage.react("❌");
+
+				// Create a reaction collector
+				const filter = (reaction, user) => (reaction.emoji.name === "◀" || reaction.emoji.name === "▶" || reaction.emoji.name === "❌") && user.id === message.author.id
+				const collector = embedMessage.createReactionCollector(filter, { time: 15000 }).once("collect", MessageReaction => {
+					//action of one reaction
+					const chosen = MessageReaction.emoji.name;
+
+					switch (chosen) {
+						case "◀":
+							reply += "◀";
+							break;
+						case "▶":
+							reply += "▶";
+							break;
+						case "❌":
+							reply += "❌";
+							break;
+					}
+					collector.stop();
+				});
 			}).catch(console.log);
-
-
-			const collector = message.createReactionCollector((reaction, user) =>
-				user.id === message.author.id &&
-				reaction.emoji.name === "◀" ||
-				reaction.emoji.name === "▶" ||
-				reaction.emoji.name === "❌"
-			).once("collect", reaction => {
-				const chosen = reaction.emoji.name;
-				if (chosen === "◀") {
-					sendEmbed(message, '◀', 'reply', true);
-				} else if (chosen === "▶") {
-					sendEmbed(message, '▶', 'reply', true);
-				} else {
-					sendEmbed(message, '❌', 'reply', true);
-				}
-				collector.stop();
-			});
 		}
 
 		//command outside botChannel
@@ -475,4 +523,5 @@ music   fille d'attente pour le .play
 				seek
 
 pierre feuille ciceau --> crée un DM pour demander le choix aux personne mentionnée
+
 */
