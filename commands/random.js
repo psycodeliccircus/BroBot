@@ -14,5 +14,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "random",
-	category: "Misc"
+	category: "Misc",
+	usage: `${config.prefix}random`,
+	description: "Tire un membre au sort dans le channel vocal"
 }

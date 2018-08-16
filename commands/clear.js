@@ -11,5 +11,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "clear",
-	category: "Moderation"
+	category: "Moderation",
+	usage: `${config.prefix}clear (numero)`,
+	description: "Supprime un nombre donné de message(s)"
 }

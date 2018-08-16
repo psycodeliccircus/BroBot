@@ -12,9 +12,9 @@ module.exports.run = async (bot, message, splitMessage) => {
 		.setTitle('**Bienvue sur l\'aide du BroBot**')
 		.setDescription('Veuillez trouver ci-dessous les différentes commandes disponible')
 		.setColor(3447003)
-		.addField("Musique", `${bot.commands.filter(cmd => cmd.help.category === 'Musique').map(cmd => `\`${cmd.help.name}\``).join(", ")}`, true)
-		.addField("Moderation", `${bot.commands.filter(cmd => cmd.help.category === 'Moderation').map(cmd => `\`${cmd.help.name}\``).join(", ")}`, true)
-		.addField("Misc", `${bot.commands.filter(cmd => cmd.help.category === 'Misc').map(cmd => `\`${cmd.help.name}\``).join(", ")}`, true)
+		.addField("Musique", `${bot.commands.filter(cmd => cmd.help.category === 'Musique').map(cmd => `\`${cmd.help.name}\``).join("\n ")}`, true)
+		.addField("Moderation", `${bot.commands.filter(cmd => cmd.help.category === 'Moderation').map(cmd => `\`${cmd.help.name}\``).join("\n ")}`, true)
+		.addField("Misc", `${bot.commands.filter(cmd => cmd.help.category === 'Misc').map(cmd => `\`${cmd.help.name}\``).join("\n ")}`, true)
 		.addField("Configuration", `${bot.commands.filter(cmd => cmd.help.category === 'Configuration').map(cmd => `\`${cmd.help.name}\``).join(", ")}`, true)
 		.addBlankField()
 		.addField('Attention ', ':warning: Merci de ne pas spam les commandes du bot')
@@ -26,5 +26,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "help",
-	category: "Misc"
+	category: "Misc",
+	usage: `${config.prefix}help`,
+	description: "Affiche l\'aide du bot"
 }

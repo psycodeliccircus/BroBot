@@ -11,5 +11,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "ping",
-	category: "Misc"
+	category: "Misc",
+	usage: `${config.prefix}ping`,
+	description: "Donne le ping du bot"
 }

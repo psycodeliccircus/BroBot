@@ -28,5 +28,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "pfc",
-	category: "Misc"
+	category: "Misc",
+	usage: `${config.prefix}pfc (mention)(mention)`,
+	description: "Pierre Feuille Ciseaux aléatoire entre deux joueurs"
 }

@@ -14,5 +14,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "pause",
-	category: "Musique"
+	category: "Musique",
+	usage: `${config.prefix}pause`,
+	description: "Met en pause l\'audio"
 }

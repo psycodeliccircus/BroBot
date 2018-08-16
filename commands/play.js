@@ -153,5 +153,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "play",
-	category: "Musique"
+	category: "Musique",
+	usage: `${config.prefix}play (Lien Youtube / Mot clef)`,
+	description: "Joue la video indiquée"
 }

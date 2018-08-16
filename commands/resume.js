@@ -14,5 +14,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "resume",
-	category: "Musique"
+	category: "Musique",
+	usage: `${config.prefix}resume`,
+	description: "retire la pause"
 }

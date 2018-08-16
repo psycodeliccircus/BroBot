@@ -57,13 +57,11 @@ bot.on('message', async message => {
 	// 			.setColor(3447003) //bleu
 	// 			//music
 	// 			.addField('Music', '`.play (Lien Youtube / Mot clef)` Joue la video indiquée \n`.pause` Met en pause l\'audio \n`.resume` retire la pause \n`.volume (1-100)` regle le volume de la musique jouée \n`.skip` Passe la vidéo en, cours')
-	// 			//moderation
-	// 			.addField('Moderation', '`.clear (numero)` Supprime un nombre donnée de message \n`.botActivity (activité) , (PLAYING,STREAMING,LISTENING,WATCHING)` défini l\'activité du bot ')
 	// 			//misc
-	// 			.addField('Misc', '`.pfc (mention)(mention)\n` Pierre Feuille Ciseaux aléatoire entre deux joueurs \n`.random` Tire un membre au sort dans le channel vocal \n`.help` Affiche l\'aide du bot')
+	// 			.addField('Misc', '`.pfc (mention)(mention)\n` Pierre Feuille Ciseaux aléatoire entre deux joueurs \n`.random` Tire un membre au sort dans le channel vocal)
 	// 			.addBlankField()
 	// 			//Configuration
-	// 			.addField('Configuration', 'Ces commandes sont liées à des roles spécifique \n`.botChannel (mention d\'un channel texutelle) \n.prefix [valeur]\n`')
+	// 			.addField('Configuration', 'Ces commandes sont liées à des roles spécifique \n` \n.prefix [valeur]\n`')
 	// 			.addBlankField()
 	// 			//warn
 	// 			.addField('Attention ', ':warning: Merci de ne pas spam les commandes du bot')

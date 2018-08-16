@@ -14,5 +14,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
 module.exports.help = {
 	name: "skip",
-	category: "Musique"
+	category: "Musique",
+	usage: `${config.prefix}skip`,
+	description: "Passe l'audio en cours"
 }
