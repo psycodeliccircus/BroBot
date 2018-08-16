@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 		.addField("Musique", `${bot.commands.filter(cmd => cmd.help.category === 'Musique').map(cmd => `\`${cmd.help.name}\``).join("\n ")}`, true)
 		.addField("Moderation", `${bot.commands.filter(cmd => cmd.help.category === 'Moderation').map(cmd => `\`${cmd.help.name}\``).join("\n ")}`, true)
 		.addField("Misc", `${bot.commands.filter(cmd => cmd.help.category === 'Misc').map(cmd => `\`${cmd.help.name}\``).join("\n ")}`, true)
-		.addField("Configuration", `${bot.commands.filter(cmd => cmd.help.category === 'Configuration').map(cmd => `\`${cmd.help.name}\``).join(", ")}`, true)
+		.addField("Configuration", `${bot.commands.filter(cmd => cmd.help.category === 'Configuration').map(cmd => `\`${cmd.help.name}\``).join(`\n`)}`, true)
 		.addBlankField()
 		.addField('Attention ', ':warning: Merci de ne pas spam les commandes du bot')
 		.setFooter('broBot | .help')

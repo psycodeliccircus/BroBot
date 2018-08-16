@@ -43,34 +43,6 @@ bot.on('message', async message => {
 	cmd = bot.commands.get(splitMessage[0].slice(config.prefix.length));
 	if (cmd === 'pl') cmd = 'play';
 	if (cmd) cmd.run(bot, message, splitMessage);
-
-
-	// 	//help
-	// 	if (isCommand('help')) {
-	// 		message.delete();
-	// 		functions.sendEmbed(message, "l'aide à été envoyé en DM.", 'reply', true);
-	// 		var embedHelp = new Discord.RichEmbed();
-	// 		//create the embed
-	// 		embedHelp.setAuthor('Le BroBot', 'https://puu.sh/AQXzs/8b78380f55.png')
-	// 			.setTitle('**Bienvue sur l\'aide du BroBot**')
-	// 			.setDescription('Veuillez trouver ci-dessous les différentes commandes disponible')
-	// 			.setColor(3447003) //bleu
-	// 			//music
-	// 			.addField('Music', '`.play (Lien Youtube / Mot clef)` Joue la video indiquée \n`.pause` Met en pause l\'audio \n`.resume` retire la pause \n`.volume (1-100)` regle le volume de la musique jouée \n`.skip` Passe la vidéo en, cours')
-	// 			//misc
-	// 			.addField('Misc', '`.pfc (mention)(mention)\n` Pierre Feuille Ciseaux aléatoire entre deux joueurs \n`.random` Tire un membre au sort dans le channel vocal)
-	// 			.addBlankField()
-	// 			//Configuration
-	// 			.addField('Configuration', 'Ces commandes sont liées à des roles spécifique \n` \n.prefix [valeur]\n`')
-	// 			.addBlankField()
-	// 			//warn
-	// 			.addField('Attention ', ':warning: Merci de ne pas spam les commandes du bot')
-	//
-	// 			.setFooter('broBot | .help')
-	// 			.setTimestamp();
-	// 		//DM message
-	// 		message.author.send({ embed: embedHelp });
-	// 	}
 });
 
 
@@ -108,11 +80,10 @@ bot.on('guildMemberAdd', member => {
 bot.login(process.env.tokenDiscord); //token du bot
 
 /*
+help : ajouter usage et description à chaques lignes
 
 
-autoriser les messages en DM au bot
-
-music   fille d'attente pour le .play
+music   file d'attente pour le .play
 				seek
 
 pierre feuille ciceau --> crée un DM pour demander le choix aux personne mentionnée
