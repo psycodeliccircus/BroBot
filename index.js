@@ -107,7 +107,7 @@ bot.on('guildMemberAdd', member => {
 		.catch(console.error)
 });
 
-bot.login(config.token); //token du bot
+bot.login(process.env.tokenDiscord); //token du bot
 
 /*
 

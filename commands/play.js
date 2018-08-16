@@ -110,7 +110,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 			}
 
 			//youtube search
-			var options = { maxResults: 1, key: config.youtube };
+			var options = { maxResults: 1, key: process.env.clefAPIYoutube };
 			search(splitMessage.join(' ').substring(config.prefix.length + commandLenght), options, (err, results) => {
 				if (err) return console.log(err);
 
