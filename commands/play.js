@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Discord = require('discord.js');
 const youtubeStream = require('ytdl-core');
 const search = require('youtube-search')

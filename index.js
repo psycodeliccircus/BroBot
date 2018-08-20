@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Discord = require('discord.js');
 const config = require("./storage/config.json");
 const functions = require("./storage/functions.js");
@@ -87,5 +88,4 @@ music   file d'attente pour le .play
 				seek
 
 pierre feuille ciceau --> crée un DM pour demander le choix aux personne mentionnée
-
 */
