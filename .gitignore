@@ -55,6 +55,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
+*.env
 .env
 
 # next.js build output
@@ -62,6 +63,3 @@ typings/
 
 # bat files
 *.bat
-
-# specific file in folder
-/storage/config.env
