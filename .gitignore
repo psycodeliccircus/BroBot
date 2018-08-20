@@ -62,3 +62,6 @@ typings/
 
 # bat files
 *.bat
+
+# specific file in folder
+storage/config.env
