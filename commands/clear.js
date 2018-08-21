@@ -13,5 +13,6 @@ module.exports.help = {
 	name: "clear",
 	category: "Moderation",
 	usage: `${config.prefix}clear (numero)`,
-	description: "Supprime un nombre donné de message(s)"
+	description: "Supprime un nombre donné de message(s)",
+	aliases: ['cl']
 }

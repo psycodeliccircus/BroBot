@@ -26,5 +26,6 @@ module.exports.help = {
 	name: "botChannel",
 	category: "Configuration",
 	usage: `${config.prefix}botChannel (mention d\'un channel texutel)`,
-	description: "Défini le channel pour les commandes du bot"
+	description: "Défini le channel pour les commandes du bot",
+	aliases: ['bc']
 }

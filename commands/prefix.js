@@ -25,5 +25,6 @@ module.exports.help = {
 	name: "prefix",
 	category: "Configuration",
 	usage: `${config.prefix}prefix [chaine de caractère]`,
-	description: "Défini le préfix du bot"
+	description: "Défini le préfix du bot",
+	aliases: ['pref']
 }

@@ -16,5 +16,6 @@ module.exports.help = {
 	name: "random",
 	category: "Misc",
 	usage: `${config.prefix}random`,
-	description: "Tire un membre au sort dans le channel vocal"
+	description: "Tire un membre au sort dans le channel vocal",
+	aliases: ['rnd']
 }

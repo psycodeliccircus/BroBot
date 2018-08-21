@@ -30,5 +30,6 @@ module.exports.help = {
 	name: "pfc",
 	category: "Misc",
 	usage: `${config.prefix}pfc (mention)(mention)`,
-	description: "Pierre Feuille Ciseaux aléatoire entre deux joueurs"
+	description: "Pierre Feuille Ciseaux aléatoire entre deux joueurs",
+	aliases: ['pierreFeuilleCiseaux']
 }

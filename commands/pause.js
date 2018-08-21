@@ -16,5 +16,6 @@ module.exports.help = {
 	name: "pause",
 	category: "Musique",
 	usage: `${config.prefix}pause`,
-	description: "Met en pause l\'audio"
+	description: "Met en pause l\'audio",
+	aliases: ['p']
 }

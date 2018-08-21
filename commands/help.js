@@ -28,5 +28,6 @@ module.exports.help = {
 	name: "help",
 	category: "Misc",
 	usage: `${config.prefix}help`,
-	description: "Affiche l\'aide du bot"
+	description: "Affiche l\'aide du bot",
+	aliases: ['h']
 }

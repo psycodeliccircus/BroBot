@@ -156,5 +156,6 @@ module.exports.help = {
 	name: "play",
 	category: "Musique",
 	usage: `${config.prefix}play (Lien Youtube / Mot clef)`,
-	description: "Joue la video indiquée"
+	description: "Joue la video indiquée",
+	aliases: ['pl']
 }

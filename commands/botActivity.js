@@ -39,5 +39,6 @@ module.exports.help = {
 	name: "botActivity",
 	category: "Moderation",
 	usage: `${config.prefix}botActivity (activité) , (PLAYING,STREAMING,LISTENING,WATCHING)`,
-	description: "Défini l\'activité du bot"
+	description: "Défini l\'activité du bot",
+	aliases: ['ba']
 }

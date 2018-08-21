@@ -16,5 +16,6 @@ module.exports.help = {
 	name: "resume",
 	category: "Musique",
 	usage: `${config.prefix}resume`,
-	description: "retire la pause"
+	description: "retire la pause",
+	aliases: ['res']
 }

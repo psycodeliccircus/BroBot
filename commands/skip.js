@@ -16,5 +16,6 @@ module.exports.help = {
 	name: "skip",
 	category: "Musique",
 	usage: `${config.prefix}skip`,
-	description: "Passe l'audio en cours"
+	description: "Passe l'audio en cours",
+	aliases: ['s']
 }

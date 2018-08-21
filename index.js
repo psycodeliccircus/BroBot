@@ -8,6 +8,7 @@ const search = require('youtube-search')
 const bot = new Discord.Client();
 const embed = new Discord.RichEmbed();
 bot.commands = new Discord.Collection();
+bot.aliases = new Discord.Collection();
 
 fs.readdir("./commands/", (err, files) => {
 	if (err) console.error(err);
@@ -24,6 +25,9 @@ fs.readdir("./commands/", (err, files) => {
 		let cmds = require(`./commands/${file}`);
 		console.log(`${i + 1}: ${file} loaded`);
 		bot.commands.set(cmds.help.name, cmds);
+		cmds.help.aliases.forEach(alias => {
+			bot.aliases.set(alias, cmds.help.name);
+		})
 	});
 });
 
@@ -41,8 +45,7 @@ bot.on('message', async message => {
 	//prefix check
 	if (!splitMessage[0].startsWith(config.prefix)) return;
 	//command handler
-	cmd = bot.commands.get(splitMessage[0].slice(config.prefix.length));
-	if (cmd === 'pl') cmd = 'play';
+	cmd = bot.commands.get(splitMessage[0].slice(config.prefix.length)) || bot.commands.get(bot.aliases.get(splitMessage[0].slice(config.prefix.length)));
 	if (cmd) cmd.run(bot, message, splitMessage);
 });
 

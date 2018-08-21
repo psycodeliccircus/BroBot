@@ -13,5 +13,6 @@ module.exports.help = {
 	name: "ping",
 	category: "Misc",
 	usage: `${config.prefix}ping`,
-	description: "Donne le ping du bot"
+	description: "Donne le ping du bot",
+	aliases: ['pong']
 }

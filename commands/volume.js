@@ -19,5 +19,6 @@ module.exports.help = {
 	name: "volume",
 	category: "Musique",
 	usage: `${config.prefix}volume (1-100)`,
-	description: "regle le volume de la musique jouée"
+	description: "regle le volume de la musique jouée",
+	aliases: ['vol']
 }
