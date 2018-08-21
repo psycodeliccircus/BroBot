@@ -13,5 +13,5 @@ Bot Discord using `discord.js` and `Node.js, npm`.
 
 # Usage
 
-On discord type `.help` 
+On discord type `.help`
 >the prefix "." can be changed on the config file.
