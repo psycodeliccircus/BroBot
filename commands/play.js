@@ -23,12 +23,6 @@ module.exports.run = async (bot, message, splitMessage) => {
       "Pour jouer de la musique, connectez vous dans un salon vocal");
   }
 
-  //random color for the embed
-  let colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE",
-    "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"
-  ];
-  let color = colorList[Math.floor(Math.random() * colorList.length)];
-
   //join voice channel
   message.member.voiceChannel.join()
     .then(connection => {
@@ -63,7 +57,7 @@ module.exports.run = async (bot, message, splitMessage) => {
             .addField("Position dans la file: ", `\# 1`, true)
             .setFooter(`Musique ajoutée par ${message.author.username}`,
               `${message.author.avatarURL}`)
-            .setColor(color);
+            .setColor(functions.randomColors());
           //message.channel.send({ embed: embedVideo });
           message.channel.send({
               embed: embedVideo
@@ -183,7 +177,7 @@ module.exports.run = async (bot, message, splitMessage) => {
                 .setFooter(
                   `Musique ajoutée par ${message.author.username}`,
                   `${message.author.avatarURL}`)
-                .setColor(color);
+                .setColor(functions.randomColors());
               message.channel.send({
                 embed: embedVideo
               });
@@ -223,3 +217,10 @@ module.exports.help = {
   description: "Joue la video indiquée",
   aliases: ['pl']
 }
+
+/*
+repetition between link and key words --> function ?
+
+add waiting list when we play a song when antoher is already started .
+
+*/

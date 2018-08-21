@@ -45,3 +45,12 @@ module.exports.sendError = (message, description) => {
     .then(msg => msg.delete(10000))
     .catch(console.error);
 }
+
+module.exports.randomColors = () => {
+  //random color for the embed
+  let colorList = ["AQUA", "GREEN", "BLUE", "PURPLE", "GOLD", "ORANGE",
+    "0xFF7F00", "0xFFFF00", "0x22FF00", "0x2200FF", "0x663399", "0x7851a9"
+  ];
+  return color = colorList[Math.floor(Math.random() * colorList.length)];
+
+}

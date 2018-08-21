@@ -66,7 +66,7 @@ bot.on('guildMemberAdd', member => {
           'https://puu.sh/AQXzs/8b78380f55.png')
         .setTitle('**Bienvue**')
         .setDescription('Bienvue sur le serveur des Brolitzer' + member.displayName)
-        .setColor(3447003) //bleu
+        .setColor(functions.randomColors())
         .addField("--Musique--",
           `${bot.commands.filter(cmd => cmd.help.category === 'Musique').map(cmd => `\`${cmd.help.name}\`: ${cmd.help.usage}\n\ ${cmd.help.description}`).join("\n\n")}`,
           false)
