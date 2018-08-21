@@ -60,17 +60,11 @@ bot.on('guildMemberAdd', member => {
 				.setTitle('**Bienvue**')
 				.setDescription('Bienvue sur le serveur des Brolitzer' + member.displayName)
 				.setColor(3447003) //bleu
-				//music
-				.addField('Music', '`.play (Lien Youtube / Mot clef)` Joue la video indiquée \n`.pause` Met en pause l\'audio \n`.resume` retire la pause \n`.volume (1-100)` regle le volume de la musique jouée \n`.skip` Passe la vidéo en, cours')
-				//moderation
-				.addField('Moderation', '`.clear (numero)` Supprime un nombre donnée de message \n`.botActivity (activité) , (PLAYING,STREAMING,LISTENING,WATCHING)` défini l\'activité du bot')
-				//misc
-				.addField('Misc', '`.pfc (mention)(mention)\n` Pierre Feuille Ciseaux aléatoire entre deux joueurs \n`.random` Tire un membre au sort dans le channel vocal \n`.help` Affiche l\'aide du bot')
+				.addField("--Musique--", `${bot.commands.filter(cmd => cmd.help.category === 'Musique').map(cmd => `\`${cmd.help.name}\`: ${cmd.help.usage}\n\ ${cmd.help.description}`).join("\n\n")}`, false)
+				.addField("--Moderation--", `${bot.commands.filter(cmd => cmd.help.category === 'Moderation').map(cmd => `\`${cmd.help.name}\`: ${cmd.help.usage}\n\ ${cmd.help.description}`).join("\n\n")}`, false)
+				.addField("--Misc--", `${bot.commands.filter(cmd => cmd.help.category === 'Misc').map(cmd => `\`${cmd.help.name}\`: ${cmd.help.usage}\n ${cmd.help.description}`).join("\n\n")}`, false)
+				.addField("--Configuration--", `${bot.commands.filter(cmd => cmd.help.category === 'Configuration').map(cmd => `\`${cmd.help.name}\`: ${cmd.help.usage}\n\ ${cmd.help.description}`).join("\n\n")}`, false)
 				.addBlankField()
-				//Configuration
-				.addField('Configuration', 'Ces commandes sont liées à des roles spécifique \n`.botChannel (mention d\'un channel texutelle) \n.prefix [valeur]\n`')
-				.addBlankField()
-				//warn
 				.addField('Attention ', ':warning: Merci de ne pas spam les commandes du bot')
 
 				.setFooter('broBot | .help')
@@ -80,15 +74,10 @@ bot.on('guildMemberAdd', member => {
 		})
 		.catch(console.error)
 });
-
 bot.login(process.env.tokenDiscord); //token du bot
 
 /*
-help : ajouter usage et description à chaques lignes
-
-
 music   file d'attente pour le .play
 				seek
-
 pierre feuille ciceau --> crée un DM pour demander le choix aux personne mentionnée
 */

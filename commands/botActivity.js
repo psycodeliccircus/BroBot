@@ -38,7 +38,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 module.exports.help = {
 	name: "botActivity",
 	category: "Moderation",
-	usage: `${config.prefix}botActivity (activité) , (PLAYING,STREAMING,LISTENING,WATCHING)`,
+	usage: `${config.prefix}botActivity (activité) , (playing,streaming,listening,watching)`,
 	description: "Défini l\'activité du bot",
 	aliases: ['ba']
 }

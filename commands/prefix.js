@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 module.exports.help = {
 	name: "prefix",
 	category: "Configuration",
-	usage: `${config.prefix}prefix [chaine de caractère]`,
+	usage: `${config.prefix}prefix (chaine de caractères)`,
 	description: "Défini le préfix du bot",
 	aliases: ['pref']
 }
