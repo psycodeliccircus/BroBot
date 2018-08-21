@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, splitMessage) => {
     .setTitle('**Bienvue sur l\'aide du BroBot**')
     .setDescription(
       'Veuillez trouver ci-dessous les différentes commandes disponible')
-    .setColor(3447003)
+    .setColor(functions.randomColors())
     .addField("--Musique--",
       `${bot.commands.filter(cmd => cmd.help.category === 'Musique').map(cmd => `\`${cmd.help.name}\`: ${cmd.help.usage}\n\ ${cmd.help.description}`).join("\n\n")}`,
       false)
