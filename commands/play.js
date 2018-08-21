@@ -45,6 +45,28 @@ module.exports.run = async (bot, message, splitMessage) => {
           console.log("\n" + info.video_url);
           console.log(info.title);
 
+          const stream = youtubeStream(splitMessage[1], {
+            quality: 'highestaudio',
+            filter: 'audioonly'
+          });
+
+          const dispatcher = connection.playStream(stream, {
+            seek: 0,
+            volume: config.defaultvolume
+          });
+
+          dispatcher.on('error', err => {
+            functions.sendError(message,
+              'Erreur: Impossible de lire le fichier donné')
+            connection.disconnect();
+            console.log(err);
+          });
+
+          dispatcher.on('end', err => {
+            console.log(err);
+            connection.disconnect();
+          });
+
           //embed for the video that is playing
           let embedVideo = new Discord.RichEmbed()
             .setAuthor(`${info.title}`,
@@ -58,103 +80,20 @@ module.exports.run = async (bot, message, splitMessage) => {
             .setFooter(`Musique ajoutée par ${message.author.username}`,
               `${message.author.avatarURL}`)
             .setColor(functions.randomColors());
-          //message.channel.send({ embed: embedVideo });
           message.channel.send({
-              embed: embedVideo
-            })
-            .then(embedMessage => {
-              embedMessage.react("➡");
-              embedMessage.react("⏯");
-              embedMessage.react("❌");
-
-              // Create a reaction collector
-              const filter = (reaction, user) => (reaction.emoji.name ===
-                "➡" || reaction.emoji.name === "⏯" || reaction.emoji
-                .name === "❌") && user.id === message.author.id
-              const collector = embedMessage.createReactionCollector(
-                  filter, {
-                    time: 15000
-                  })
-                .once("collect", MessageReaction => {
-                  //action of one reaction
-                  const chosen = MessageReaction.emoji.name;
-                  const voiceConnection = bot.voiceConnections.find(
-                    val => val.channel.guild.id == message.guild.id
-                  );
-                  const dispatcher = voiceConnection.player.dispatcher;
-
-                  switch(chosen) {
-                  case "➡":
-                    //skip
-                    if(voiceConnection === null) return functions.sendError(
-                      message, 'Aucune musique n\'est jouée');
-                    if(voiceConnection.paused) dispatcher.resume();
-                    dispatcher.end();
-                    functions.sendEmbed(message,
-                      `Musique skip par ${message.author}`,
-                      'send', false)
-                    break;
-                  case "⏯":
-                    //pause
-                    if(voiceConnection === null) return functions.sendError(
-                      message, 'Aucune musique n\'est jouée');
-                    functions.sendEmbed(message,
-                      'Musique mise en pause', 'send', true);
-                    if(!dispatcher.paused) dispatcher.pause();
-                    break;
-                  case "❌":
-                    //
-                    if(voiceConnection === null) return functions.sendError(
-                      message, 'Aucune musique n\'est jouée');
-                    if(voiceConnection.paused) dispatcher.resume();
-                    dispatcher.end();
-                    break;
-                  }
-                  collector.stop();
-                });
-            })
-            .catch(console.log);
-        });
-
-
-
-        const stream = youtubeStream(splitMessage[1], {
-          quality: 'lowest',
-          filter: 'audioonly'
-        });
-        const dispatcher = connection.playStream(stream, {
-          seek: 0,
-          volume: config.defaultvolume
-        });
-
-        bot.on('error', err => {
-          functions.sendError(message,
-            'Erreur: Impossible de lire le fichier donné');
-          connection.disconnect();
-          console.log(err);
-        });
-
-        dispatcher.on('end', err => {
-          console.log(err);
-          connection.disconnect();
+            embed: embedVideo
+          });
         });
 
       } else {
         //key word
-        //get the command length
-        if(splitMessage[0] === config.prefix + "pl") {
-          commandLenght = 3
-        } else {
-          commandLenght = 5
-        }
-
         //youtube search
-        var options = {
+        let options = {
           maxResults: 1,
           key: process.env.clefAPIYoutube
         };
         search(splitMessage.join(' ')
-          .substring(config.prefix.length + commandLenght), options, (err,
+          .substring(splitMessage[0].lenght), options, (err,
             results) => {
             if(err) return console.log(err);
 
@@ -187,12 +126,13 @@ module.exports.run = async (bot, message, splitMessage) => {
               quality: 'highestaudio',
               filter: 'audioonly'
             });
+
             const dispatcher = connection.playStream(stream, {
               seek: 0,
               volume: config.defaultvolume
             });
 
-            bot.on('error', err => {
+            dispatcher.on('error', err => {
               functions.sendError(message,
                 'Erreur: Impossible de lire le fichier donné')
               connection.disconnect();
@@ -203,9 +143,9 @@ module.exports.run = async (bot, message, splitMessage) => {
               console.log(err);
               connection.disconnect();
             });
+
           });
       }
-
     })
     .catch(console.log);
 }
