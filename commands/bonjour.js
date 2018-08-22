@@ -14,9 +14,9 @@ module.exports.run = async (bot, message, splitMessage) => {
 }
 
 module.exports.help = {
-  name: "",
-  category: "",
-  usage: `${config.prefix}`,
-  description: "",
-  aliases: ['']
+  name: "bonjour",
+  category: "Misc",
+  usage: `${config.prefix}bonjour`,
+  description: "Dit Bonojour a tout le monde",
+  aliases: ['bjr']
 }
