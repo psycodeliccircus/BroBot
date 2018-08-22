@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 
   //error on the number of parameter
   if(splitMessage.length === 1) {
-    functions.sendError(message, "Veuillez spécifier un élément à joué");
+    functions.sendError(message, "Veuillez spécifier un élément à jouer");
   }
   if(!message.member.voiceChannel) {
     return functions.sendError(message, "Pour jouer de la musique, connectez vous dans un salon vocal");
@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, splitMessage) => {
         //get out playlist
         if(splitMessage[1].match(/.*list.*/)) {
           //error if the link is a playlist
-          functions.sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIS PAS CHIER)');
+          functions.sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIT, FAIS PAS CHIER)');
           connection.disconnect();
         }
 
