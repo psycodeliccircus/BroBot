@@ -5,11 +5,11 @@ Bot Discord using `discord.js` and `Node.js, npm`.
 # Setup
 
 * Install [Node.js](https://nodejs.org/en/).
-* clone the repository in a folder.
-* create the file config.json on the folder Storage by using the config_exemple.json.
+* Clone the repository in a folder.
 * Run the command `npm init`, `npm install`
+* Configure Storage/config.json with your Discord server
+* Add `Storage/.env` file with tokenDiscord and clefAPIYoutube
 * Run `node index.js`
-* configure Storage/config.json with your Discord server
 
 # Usage
 
