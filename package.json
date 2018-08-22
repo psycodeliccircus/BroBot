@@ -9,17 +9,11 @@
 	"author": "Babson",
 	"license": "ISC",
 	"dependencies": {
-		"bufferutil": "^4.0.0",
-		"cleanup-dependencies": "0.0.6",
 		"discord.js": "^11.4.2",
 		"dotenv": "^6.0.0",
-		"enmap": "^2.6.3",
 		"ffmpeg-binaries": "^3.2.2-3",
 		"fluent-ffmpeg": "^2.1.2",
-		"https": "^1.0.0",
 		"opusscript": "0.0.6",
-		"request": "^2.87.0",
-		"youtube-audio-stream": "^0.2.0",
 		"youtube-search": "^1.1.1",
 		"ytdl-core": "^0.20.4"
 	},
