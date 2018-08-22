@@ -10,6 +10,8 @@ module.exports.run = async (bot, message, splitMessage) => {
   }
 
   functions.sendEmbed(message, `Bonjour @everyone`, true);
+  functions.sendEmbed(message, `Bonjour everyone`, true);
+  console.log("test bonjout");
 
 }
 
