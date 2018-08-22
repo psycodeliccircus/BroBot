@@ -1,5 +1,7 @@
 require('dotenv')
-  .config()
+  .config({
+    path: './storage/.env'
+  });
 const Discord = require('discord.js');
 const config = require("./storage/config.json");
 const functions = require("./storage/functions.js");

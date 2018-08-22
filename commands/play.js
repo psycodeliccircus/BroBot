@@ -1,5 +1,7 @@
 require('dotenv')
-  .config()
+  .config({
+    path: '../storage/.env'
+  });
 const Discord = require('discord.js');
 const youtubeStream = require('ytdl-core');
 const search = require('youtube-search')
@@ -9,9 +11,7 @@ let functions = require("../storage/functions.js");
 module.exports.run = async (bot, message, splitMessage) => {
   message.delete();
   if(!(message.channel.id === config.salonBotId)) {
-    return functions.sendError(message,
-      `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`,
-      true);
+    return functions.sendError(message, `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
   }
 
   //error on the number of parameter
@@ -19,8 +19,7 @@ module.exports.run = async (bot, message, splitMessage) => {
     functions.sendError(message, "Veuillez spécifier un élément à joué");
   }
   if(!message.member.voiceChannel) {
-    return functions.sendError(message,
-      "Pour jouer de la musique, connectez vous dans un salon vocal");
+    return functions.sendError(message, "Pour jouer de la musique, connectez vous dans un salon vocal");
   }
 
   //join voice channel
@@ -33,9 +32,7 @@ module.exports.run = async (bot, message, splitMessage) => {
         //get out playlist
         if(splitMessage[1].match(/.*list.*/)) {
           //error if the link is a playlist
-          functions.sendError(message,
-            'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIS PAS CHIER)'
-          );
+          functions.sendError(message, 'Impossible de lire des playlist (OUAI JE L\'AI PAS ENCORE FAIS, FAIS PAS CHIER)');
           connection.disconnect();
         }
 
@@ -45,56 +42,46 @@ module.exports.run = async (bot, message, splitMessage) => {
           console.log("\n" + info.video_url);
           console.log(info.title);
 
-          const stream = youtubeStream(splitMessage[1], {
-            quality: 'highestaudio',
-            filter: 'audioonly'
-          });
-
-          const dispatcher = connection.playStream(stream, {
-            seek: 0,
-            volume: config.defaultvolume
-          });
-
-          dispatcher.on('error', err => {
-            functions.sendError(message,
-              'Erreur: Impossible de lire le fichier donné')
-            connection.disconnect();
-            console.log(err);
-          });
-
-          dispatcher.on('end', err => {
-            console.log(err);
-            connection.disconnect();
-          });
-
           //embed for the video that is playing
           let embedVideo = new Discord.RichEmbed()
-            .setAuthor(`${info.title}`,
-              'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png',
-              `${info.video_url}`)
+            .setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
             .setThumbnail(`${info.thumbnail_url}`)
             .setTitle(`${info.video_url}`)
-            .addField("Durée de la vidéo: ",
-              `${info.length_seconds} secondes`, true)
+            .addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
             .addField("Position dans la file: ", `\# 1`, true)
-            .setFooter(`Musique ajoutée par ${message.author.username}`,
-              `${message.author.avatarURL}`)
+            .setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
             .setColor(functions.randomColors());
           message.channel.send({
             embed: embedVideo
           });
+
+        });
+
+
+
+        const stream = youtubeStream(splitMessage[1], {quality: 'lowest',filter: 'audioonly'});
+        const dispatcher = connection.playStream(stream, {seek: 0 ,volume: config.defaultvolume });
+
+        bot.on('error', err => {
+          functions.sendError(message, 'Erreur: Impossible de lire le fichier donné');
+          connection.disconnect();
+          console.log(err);
+        });
+
+        dispatcher.on('end', err => {
+          console.log(err);
+          connection.disconnect();
         });
 
       } else {
         //key word
         //youtube search
-        let options = {
+        var options = {
           maxResults: 1,
           key: process.env.clefAPIYoutube
         };
         search(splitMessage.join(' ')
-          .substring(splitMessage[0].lenght), options, (err,
-            results) => {
+          .substring(splitMessage[0].length), options, (err, results) => {
             if(err) return console.log(err);
 
             //get the info of the video
@@ -105,17 +92,12 @@ module.exports.run = async (bot, message, splitMessage) => {
 
               //embed for the video that is playing
               var embedVideo = new Discord.RichEmbed()
-                .setAuthor(`${info.title}`,
-                  'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png',
-                  `${info.video_url}`)
+                .setAuthor(`${info.title}`, 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png', `${info.video_url}`)
                 .setThumbnail(`${info.thumbnail_url}`)
                 .setTitle(`${info.video_url}`)
-                .addField("Durée de la vidéo: ",
-                  `${info.length_seconds} secondes`, true)
+                .addField("Durée de la vidéo: ", `${info.length_seconds} secondes`, true)
                 .addField("Position dans la file: ", `\# 1`, true)
-                .setFooter(
-                  `Musique ajoutée par ${message.author.username}`,
-                  `${message.author.avatarURL}`)
+                .setFooter(`Musique ajoutée par ${message.author.username}`, `${message.author.avatarURL}`)
                 .setColor(functions.randomColors());
               message.channel.send({
                 embed: embedVideo
@@ -126,15 +108,13 @@ module.exports.run = async (bot, message, splitMessage) => {
               quality: 'highestaudio',
               filter: 'audioonly'
             });
-
             const dispatcher = connection.playStream(stream, {
               seek: 0,
               volume: config.defaultvolume
             });
 
-            dispatcher.on('error', err => {
-              functions.sendError(message,
-                'Erreur: Impossible de lire le fichier donné')
+            bot.on('error', err => {
+              functions.sendError(message, 'Erreur: Impossible de lire le fichier donné')
               connection.disconnect();
               console.log(err);
             });
@@ -143,9 +123,9 @@ module.exports.run = async (bot, message, splitMessage) => {
               console.log(err);
               connection.disconnect();
             });
-
           });
       }
+
     })
     .catch(console.log);
 }
@@ -153,14 +133,7 @@ module.exports.run = async (bot, message, splitMessage) => {
 module.exports.help = {
   name: "play",
   category: "Musique",
-  usage: `${config.prefix}play (Lien Youtube / Mot clef)`,
-  description: "Joue la video indiquée",
+  usage: `${config.prefix}play (lien / mots clef)`,
+  description: "joue une musique",
   aliases: ['pl']
 }
-
-/*
-repetition between link and key words --> function ?
-
-add waiting list when we play a song when antoher is already started .
-
-*/
