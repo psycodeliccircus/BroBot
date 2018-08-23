@@ -9,6 +9,11 @@ let config = require('../storage/config.json');
 let functions = require("../storage/functions.js");
 
 module.exports.run = async (bot, message, splitMessage) => {
+
+try {
+
+
+
   message.delete();
   if(!(message.channel.id === config.salonBotId)) {
     return functions.sendError(message, `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
@@ -62,12 +67,6 @@ module.exports.run = async (bot, message, splitMessage) => {
         const stream = youtubeStream(splitMessage[1], {quality: 'lowest',filter: 'audioonly'});
         const dispatcher = connection.playStream(stream, {seek: 0 ,volume: config.defaultvolume });
 
-        bot.on('error', err => {
-          functions.sendError(message, 'Erreur: Impossible de lire le fichier donné');
-          connection.disconnect();
-          console.log(err);
-        });
-
         dispatcher.on('end', err => {
           console.log(err);
           connection.disconnect();
@@ -113,12 +112,6 @@ module.exports.run = async (bot, message, splitMessage) => {
               volume: config.defaultvolume
             });
 
-            bot.on('error', err => {
-              functions.sendError(message, 'Erreur: Impossible de lire le fichier donné')
-              connection.disconnect();
-              console.log(err);
-            });
-
             dispatcher.on('end', err => {
               console.log(err);
               connection.disconnect();
@@ -127,7 +120,9 @@ module.exports.run = async (bot, message, splitMessage) => {
       }
 
     })
-    .catch(console.log);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 module.exports.help = {
