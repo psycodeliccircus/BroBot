@@ -14,9 +14,9 @@ module.exports.run = async (bot, message, splitMessage) => {
   var player1 = message.mentions.users.last();
   if(player1 === undefined) return functions.sendError(message,
     "Merci de bien vouloir mentionner les joueurs");
-  var random1 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
-
   var player2 = message.mentions.users.first();
+  if(player2 === undefined) return functions.sendError(message,
+    "Tu vas pas jouer tout seul *manche à couilles*");
   var random2 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
 
   functions.sendEmbed(message,
