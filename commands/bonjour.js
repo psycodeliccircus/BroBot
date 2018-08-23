@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, splitMessage) => {
       `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
   }
 
-  functions.sendEmbed(message, `Bonjour @everyone`,  `send` ,true);
+  functions.sendEmbed(message, `Bonjour @everyone`,  `send`, true);
 
 
 }
@@ -18,6 +18,6 @@ module.exports.help = {
   name: "bonjour",
   category: "Misc",
   usage: `${config.prefix}bonjour`,
-  description: "Dit Bonojour a tout le monde",
+  description: "Dit Bonjour a tout le monde",
   aliases: ['bjr']
 }
