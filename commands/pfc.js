@@ -9,30 +9,18 @@ module.exports.run = async (bot, message, splitMessage) => {
       true);
   }
   // ✋👊 ✌️
-  var posiblilty = ['✋', '👊', '✌️'];
+  let posiblilty = ['✋', '👊', '✌️'];
 
-  var player1 = message.mentions.users.last();
+  var player1 = message.author
   if(player1 === undefined) return functions.sendError(message,
     "Merci de bien vouloir mentionner les joueurs");
-  var random1 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
 
   var player2 = message.mentions.users.first();
   if(player2 === undefined) return functions.sendError(message,
-    "Tu vas pas jouer tout seul *manche à couilles");
-  var random2 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
+    "Tu vas pas jouer tout seul *manche à couilles*");
 
-  functions.sendEmbed(message,
-    `**Joueur 1: ${player1} : ${random1} \n Joueur 2: ${player2} : ${random2} **`,
-    'send', false)
-
-  if(random1 === random2) {
-    functions.sendEmbed(message, 'Partie nulle', 'send', false)
-  } else if((random1 === '👊' && random2 === '✌️') || (random1 === '✋' &&
-      random2 === '👊') || (random1 === '✌️' && random2 === '✋')) {
-    functions.sendEmbed(message, `${player1} à gagné`, 'send', false);
-  } else
-
-    functions.sendEmbed(message, `${player2} à gagné`, 'send', false);
+  message.author.send("Quel est ton choix ? (envoyer un émoji)");
+  message.player2.send("Quel est ton choix ? (envoyer un émoji)");
 
 }
 
