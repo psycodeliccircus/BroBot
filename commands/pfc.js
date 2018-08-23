@@ -10,18 +10,33 @@ module.exports.run = async (bot, message, splitMessage) => {
   }
   // ✋👊 ✌️
   let posiblilty = ['✋', '👊', '✌️'];
+  let client = message.channel.client;
 
-  var player1 = message.author
+  //player1 is not alwase the author
+  let player1 = message.author
   if(player1 === undefined) return functions.sendError(message,
     "Merci de bien vouloir mentionner les joueurs");
 
-  var player2 = message.mentions.users.first();
+  let player2 = message.mentions.users.first();
+  let player2id = message.mention.
   if(player2 === undefined) return functions.sendError(message,
     "Tu vas pas jouer tout seul *manche à couilles*");
 
-  message.author.send("Quel est ton choix ? (envoyer un émoji)");
-  message.player2.send("Quel est ton choix ? (envoyer un émoji)");
+  player1.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
 
+  // fetch user via given user id
+  let user1 = client.fetchUser("IL TE FAUT L'ID DU PLAYER1")
+    .then(user => {
+      // once promise returns with user, send user a DM
+      user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
+    });
+
+  // fetch user via given user id
+  let user1 = client.fetchUser("IL TE FAUT L'ID DU PLAYER2")
+    .then(user => {
+      // once promise returns with user, send user a DM
+      user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
+    });
 }
 
 module.exports.help = {
