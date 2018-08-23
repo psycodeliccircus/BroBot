@@ -10,10 +10,6 @@ let functions = require("../storage/functions.js");
 
 module.exports.run = async (bot, message, splitMessage) => {
 
-try {
-
-
-
   message.delete();
   if(!(message.channel.id === config.salonBotId)) {
     return functions.sendError(message, `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
@@ -116,10 +112,7 @@ try {
           });
       }
 
-    })
-  } catch (err) {
-    console.error(err);
-  }
+    }).catch(console.error)
 }
 
 module.exports.help = {
