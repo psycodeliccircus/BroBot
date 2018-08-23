@@ -59,10 +59,7 @@ try {
           message.channel.send({
             embed: embedVideo
           });
-
         });
-
-
 
         const stream = youtubeStream(splitMessage[1], {quality: 'lowest',filter: 'audioonly'});
         const dispatcher = connection.playStream(stream, {seek: 0 ,volume: config.defaultvolume });
