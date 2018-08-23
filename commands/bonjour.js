@@ -9,8 +9,8 @@ module.exports.run = async (bot, message, splitMessage) => {
       `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`, true);
   }
 
-  functions.sendEmbed(message, `Bonjour @everyone`,  `send` true);
-  
+  functions.sendEmbed(message, `Bonjour @everyone`,  `send` ,true);
+
 
 }
 
