@@ -14,14 +14,17 @@ module.exports.run = async (bot, message, splitMessage) => {
   //player1 is not alwase the author
   let player1 = message.author
   // let player1 = message.mentions.users.last();
-  if(player1 === undefined) return functions.sendError(message,
-    "Merci de bien vouloir mentionner les joueurs");
+  if(player1 === undefined) {
+    return functions.sendError(message,
+      "Merci de bien vouloir mentionner les joueurs");
+  }
 
   let player2 = message.mentions.users.first();
-  let player2id = message.mention.
   //never trigger
-  if(player2 === undefined) return functions.sendError(message,
-    "Tu vas pas jouer tout seul *manche à couilles*");
+  if(player2 === undefined) {
+    return functions.sendError(message,
+      "Tu vas pas jouer tout seul *manche à couilles*");
+  }
 
   //
   //
@@ -35,7 +38,7 @@ module.exports.run = async (bot, message, splitMessage) => {
     });
 
   // fetch user2 via given user id
-  let user1 = client.fetchUser("IL TE FAUT L'ID DU PLAYER2")
+  let user2 = client.fetchUser("IL TE FAUT L'ID DU PLAYER2")
     .then(user => {
       // once promise returns with user, send user a DM
       user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
@@ -46,8 +49,8 @@ module.exports.run = async (bot, message, splitMessage) => {
   // get Collection of members in channel
   let members = message.channel.members;
   // find specific member in collection - enter user's id in place of '<id number>'
-  let user1 = members.find('id', '<id number>');
-  let user2 = members.find('id', '<id number>');
+  let user11 = members.find('id', '<id number>');
+  let user22 = members.find('id', '<id number>');
   // send Direct Message to member
   user1.send('test message');
   user2.send('test message');
