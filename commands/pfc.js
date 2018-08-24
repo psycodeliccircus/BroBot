@@ -1,5 +1,5 @@
-let config = require('../storage/config.json');
 let functions = require("../storage/functions.js");
+let config = require("../storage/config.js");
 
 module.exports.run = async (bot, message, splitMessage) => {
   message.delete();
@@ -8,52 +8,25 @@ module.exports.run = async (bot, message, splitMessage) => {
       `${message.author} Merci d\'utiliser le salon \`${config.salonBot}\` pour les commande de Bot, *manche à couilles*`,
       true);
   }
+
   // ✋👊 ✌️
-  let posiblilty = ['✋', '👊', '✌️'];
-
-  //player1 is not alwase the author
-  let player1 = message.author
-  // let player1 = message.mentions.users.last();
-  if(player1 === undefined) {
-    return functions.sendError(message,
-      "Merci de bien vouloir mentionner les joueurs");
-  }
-
-  let player2 = message.mentions.users.first();
-  //never trigger
-  if(player2 === undefined) {
-    return functions.sendError(message,
-      "Tu vas pas jouer tout seul *manche à couilles*");
-  }
-
-  //
-  //
-  //
-  let client = message.channel.client;
-  // fetch user1 via given user id
-  let user1 = client.fetchUser("IL TE FAUT L'ID DU PLAYER1")
-    .then(user => {
-      // once promise returns with user, send user a DM
-      user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
-    });
-
-  // fetch user2 via given user id
-  let user2 = client.fetchUser("IL TE FAUT L'ID DU PLAYER2")
-    .then(user => {
-      // once promise returns with user, send user a DM
-      user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
-    });
-
-  //OR
-
-  // get Collection of members in channel
-  let members = message.channel.members;
-  // find specific member in collection - enter user's id in place of '<id number>'
-  let user11 = members.find('id', '<id number>');
-  let user22 = members.find('id', '<id number>');
-  // send Direct Message to member
-  user1.send('test message');
-  user2.send('test message');
+  var posiblilty = ['✋', '👊', '✌️'];
+  var player1 = message.mentions.users.last();
+  if(player1 === undefined) return functions.sendError(message,
+    "Merci de bien vouloir mentionner les joueurs");
+  var random1 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
+  var player2 = message.mentions.users.first();
+  var random2 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
+  functions.sendEmbed(message,
+    `**Joueur 1: ${player1} : ${random1} \n Joueur 2: ${player2} : ${random2} **`,
+    'send', false)
+  if(random1 === random2) {
+    functions.sendEmbed(message, 'Partie nulle', 'send', false)
+  } else if((random1 === '👊' && random2 === '✌️') || (random1 === '✋' &&
+      random2 === '👊') || (random1 === '✌️' && random2 === '✋')) {
+    functions.sendEmbed(message, `${player1} à gagné`, 'send', false);
+  } else
+    functions.sendEmbed(message, `${player2} à gagné`, 'send', false);
 }
 
 module.exports.help = {
