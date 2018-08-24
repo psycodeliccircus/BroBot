@@ -1,5 +1,5 @@
 let functions = require("../storage/functions.js");
-let config = require("../storage/config.js");
+let config = require("../storage/config.json");
 
 module.exports.run = async (bot, message, splitMessage) => {
   message.delete();
