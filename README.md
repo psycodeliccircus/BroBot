@@ -15,3 +15,12 @@ Bot Discord using `discord.js` and `Node.js, npm`.
 
 On discord type `.help`
 >the prefix "." can be changed on the config file.
+
+# Depedencies
+> In case of trouble
+* "discord.js"
+* "dotenv"
+* "ffmpeg-binaries"
+* "opusscript":
+* "youtube-search"
+* "ytdl-core"
