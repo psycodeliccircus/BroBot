@@ -1,32 +1,30 @@
 {
-	"name": "botdiscord",
-	"version": "1.0.0",
-	"description": "Brobot",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"author": "Babson",
-	"license": "ISC",
-	"dependencies": {
-		"discord.js": "^11.4.2",
-		"dotenv": "^6.0.0",
-		"ffmpeg": "0.0.4",
-		"ffmpeg-binaries": "^3.2.2",
-		"fluent-ffmpeg": "^2.1.2",
-		"opusscript": "0.0.6",
-		"youtube-search": "^1.1.1",
-		"ytdl-core": "^0.24.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/babson4/BroBot.git"
-	},
-	"keywords": [
-		"brobot"
-	],
-	"bugs": {
-		"url": "https://github.com/babson4/BroBot/issues"
-	},
-	"homepage": "https://github.com/babson4/BroBot#readme"
+  "name": "brobot",
+  "version": "1.0.0",
+  "description": "Discord bot with diffrents features (music, moderation, misc)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/babson4/BroBot.git"
+  },
+  "keywords": [
+    "brobot"
+  ],
+  "author": "babson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/babson4/BroBot/issues"
+  },
+  "homepage": "https://github.com/babson4/BroBot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.0.0",
+    "ffmpeg-binaries": "^4.0.0",
+    "opusscript": "0.0.6",
+    "youtube-search": "^1.1.1",
+    "ytdl-core": "^0.24.0"
+  }
 }
