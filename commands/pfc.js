@@ -11,11 +11,11 @@ module.exports.run = async (bot, message, splitMessage) => {
 
   // ✋👊 ✌️
   var posiblilty = ['✋', '👊', '✌️'];
-  var player1 = message.mentions.users.last();
+  var player1 = message.mentions.users.first();
   if(player1 === undefined) return functions.sendError(message,
     "Merci de bien vouloir mentionner les joueurs");
   var random1 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
-  var player2 = message.mentions.users.first();
+  var player2 = message.mentions.users.last();
   var random2 = posiblilty[Math.floor(Math.random() * posiblilty.length)];
   functions.sendEmbed(message,
     `**Joueur 1: ${player1} : ${random1} \n Joueur 2: ${player2} : ${random2} **`,
