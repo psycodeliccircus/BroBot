@@ -12,11 +12,11 @@
 		"discord.js": "^11.4.2",
 		"dotenv": "^6.0.0",
 		"ffmpeg": "0.0.4",
-		"ffmpeg-binaries": "^3.2.2-3",
+		"ffmpeg-binaries": "^3.2.2",
 		"fluent-ffmpeg": "^2.1.2",
 		"opusscript": "0.0.6",
 		"youtube-search": "^1.1.1",
-		"ytdl-core": "^0.20.4"
+		"ytdl-core": "^0.24.0"
 	},
 	"repository": {
 		"type": "git",
