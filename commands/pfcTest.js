@@ -9,51 +9,48 @@ module.exports.run = async (bot, message, splitMessage) => {
       true);
   }
   // ✋👊 ✌️
+  //list of the possibility
   let posiblilty = ['✋', '👊', '✌️'];
-
-  //player1 is not alwase the author
-  let player1 = message.author
-  // let player1 = message.mentions.users.last();
-  if(player1 === undefined) {
+  //list of the players mentioned on the message
+  let playerList = message.mentions.users
+  if(playerList.size != 2) {
     return functions.sendError(message,
-      "Merci de bien vouloir mentionner les joueurs");
+      "Merci de bien vouloir mentionner deux joueurs");
   }
 
-  let player2 = message.mentions.users.first();
-  //never trigger
-  if(player2 === undefined) {
-    return functions.sendError(message,
-      "Tu vas pas jouer tout seul *manche à couilles*");
-  }
+  //"All collections used in Discord.js are mapped using their id"
+  let player1 = playerList.first();
+  let player2 = playerList.last();
 
-  //
-  //
-  //
-  let client = message.channel.client;
-  // fetch user1 via given user id
-  let user1 = client.fetchUser("IL TE FAUT L'ID DU PLAYER1")
-    .then(user => {
-      // once promise returns with user, send user a DM
-      user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
-    });
+  //send message in the channel.
+  functions.sendEmbed(message,
+    `**${player1} et ${player2} \n C'est l'heure d'en finir**`, 'send', false);
 
-  // fetch user2 via given user id
-  let user2 = client.fetchUser("IL TE FAUT L'ID DU PLAYER2")
-    .then(user => {
-      // once promise returns with user, send user a DM
-      user.send("Quel est ton choix ? 👊 ✋ ✌️ (envoyer un émoji)");
-    });
+  // send DM to member
+  //player1
+  await player1.send(`Fais ton choix \✋  \👊  \✌️, tu as 15 secondes`);
+  //create message collector
+  const choicePlayer1 = await player1.dmChannel.awaitMessages(msg => msg.content === "✋" || msg.content === "👊" || msg.content === "✌️", {
+    time: 15000,
+  });
+  const theChosenOneOfPlayer1 = await choicePlayer1.map(msg => msg.content);
+  player1.dmChannel.send(`Tu as choisis ${theChosenOneOfPlayer1}`);
 
-  //OR
+  //player2
+  await player2.send(`Fais ton choix \✋  \👊  \✌️, tu as 15 secondes`);
+  //create message collector
+  const choicePlayer2 = await player2.dmChannel.awaitMessages(msg => msg.content === "✋" || msg.content === "👊" || msg.content === "✌️", {
+    time: 15000,
+  });
+  const theChosenOneOfPlayer2 = await choicePlayer2.map(msg => msg.content);
 
-  // get Collection of members in channel
-  let members = message.channel.members;
-  // find specific member in collection - enter user's id in place of '<id number>'
-  let user11 = members.find('id', '<id number>');
-  let user22 = members.find('id', '<id number>');
-  // send Direct Message to member
-  user1.send('test message');
-  user2.send('test message');
+  player2.dmChannel.send(`Tu as choisis ${theChosenOneOfPlayer2}`);
+
+
+  //display choices
+  functions.sendEmbed(message,
+    `**${player1} : ${theChosenOneOfPlayer1} \n ${player2} : ${theChosenOneOfPlayer2} **`,
+    'send', false);
 }
 
 module.exports.help = {
